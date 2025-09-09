@@ -2,8 +2,22 @@
 
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { supabase } from '../lib/supabaseClient'; // yaha fix
 
 const Login = () => {
+  const loginwithGoogle = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) {
+        console.error('Error: ', error.message);
+      }
+    } catch (err) {
+      console.error('Unexpected Error: ', err);
+    }
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center px-9 py-8"
@@ -41,7 +55,10 @@ const Login = () => {
             height={24}
             className="cursor-pointer"
           />
-          <Button className="bg-blue-700 text-white text-sm px-4 py-2 h-auto">
+          <Button
+            onClick={loginwithGoogle}
+            className="bg-blue-700 text-white text-sm px-4 py-2 h-auto"
+          >
             Login with Google
           </Button>
         </div>
